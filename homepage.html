@@ -145,6 +145,24 @@
 			document.getElementById(a + b).appendChild(center);
 		}
 		
+		function create_possible_move(a, b)
+		{
+			var center = document.createElement("center"), img = document.createElement("img");
+			img.src = "possible_move.png";
+			img.id="img-" + a + b;
+			img.style.width = "50px";
+			img.style.height = "50px";
+			img.draggable = true;
+			img.addEventListener("click", () => {
+				console.log(a + b);
+			});
+			img.addEventListener("drop", (event) => {
+				console.log("moved to: " + a + b);
+			});
+			center.appendChild(img);
+			document.getElementById(a + b).appendChild(center);
+		}
+		
 		function remove_solider(a, b)
 		{
 			document.getElementById(a + b).innerHTML = '';
@@ -169,7 +187,7 @@
 		
 		function connect()
 		{
-			socket = new WebSocket("ws://192.168.3.1:8080");
+			socket = new WebSocket("ws://localhost:8080");
 			
 			// Connection opened
 			socket.addEventListener('open', function (event) {
