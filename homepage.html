@@ -1,0 +1,219 @@
+<html>
+<head>
+        <title></title>
+        <meta charset="UTF-8">
+        <style>
+            .chess-board { border-spacing: 0; border-collapse: collapse; }
+            .chess-board th { padding: .5em; }
+            .chess-board td { border: 1px solid; width: 4em; height: 4em; }
+            .chess-board .light { background: #E2CC97; }
+            .chess-board .dark { background: #8D4C4C; }
+			.center {
+				display: block;
+				margin-left: auto;
+				margin-right: auto
+			}
+        </style>
+    </head>
+    <body>
+	<center id="center">
+		<div id="startMenu" style="position:absolute;width:100%;height:100%;background:#FFFFFFCC">
+		<b><a style="font-size:100;position: absolute;margin-top: 40px;margin-left: auto;margin-right: auto;left: 0;right: 0;">דמקה</a></b>
+		<button onclick="connect();" style="outline:none;position:absolute; margin-top:250px; width:250px; height:100px; margin-left: auto; margin-right: auto; left: 0; right: 0; background: #27BF2C; color: white; font-size:50;"><b>!שחק</b></button>
+		
+		</div>
+	
+        <table class="chess-board">
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th>a</th>
+                    <th>b</th>
+                    <th>c</th>
+                    <th>d</th>
+                    <th>e</th>
+                    <th>f</th>
+                    <th>g</th>
+                    <th>h</th>
+                </tr>
+                <tr>
+                    <th>8</th>
+                    <td class="light" ondrop="onDrop" id="a8"></td>
+                    <td class="dark" id="b8"></td>
+                    <td class="light" id="c8"></td>
+                    <td class="dark" id="d8"></td>
+                    <td class="light" id="e8"></td>
+                    <td class="dark" id="f8"></td>
+                    <td class="light" id="g8"></td>
+                    <td class="dark" id="h8"></td>
+                </tr>
+                <tr>
+                    <th>7</th>
+                    <td class="dark" id="a7"></td>
+                    <td class="light" id="b7"></td>
+                    <td class="dark" id="c7"></td>
+                    <td class="light" id="d7"></td>
+                    <td class="dark" id="e7"></td>
+                    <td class="light" id="f7"></td>
+                    <td class="dark" id="g7"></td>
+                    <td class="light" id="h7"></td>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <td class="light" id="a6"></td>
+                    <td class="dark" id="b6"></td>
+                    <td class="light" id="c6"></td>
+                    <td class="dark" id="d6"></td>
+                    <td class="light" id="e6"></td>
+                    <td class="dark" id="f6"></td>
+                    <td class="light" id="g6"></td>
+                    <td class="dark" id="h6"></td>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <td class="dark" id="a5"></td>
+                    <td class="light" id="b5"></td>
+                    <td class="dark" id="c5"></td>
+                    <td class="light" id="d5"></td>
+                    <td class="dark" id="e5"></td>
+                    <td class="light" id="f5"></td>
+                    <td class="dark" id="g5"></td>
+                    <td class="light" id="h5"></td>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <td class="light" id="a4"></td>
+                    <td class="dark" id="b4"></td>
+                    <td class="light" id="c4"></td>
+                    <td class="dark" id="d4"></td>
+                    <td class="light" id="e4"></td>
+                    <td class="dark" id="f4"></td>
+                    <td class="light" id="g4"></td>
+                    <td class="dark" id="h4"></td>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <td class="dark" id="a3"></td>
+                    <td class="light" id="b3"></td>
+                    <td class="dark" id="c3"></td>
+                    <td class="light" id="d3"></td>
+                    <td class="dark" id="e3"></td>
+                    <td class="light" id="f3"></td>
+                    <td class="dark" id="g3"></td>
+                    <td class="light" id="h3"></td>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <td class="light" id="a2"></td>
+                    <td class="dark" id="b2"></td>
+                    <td class="light" id="c2"></td>
+                    <td class="dark" id="d2"></td>
+                    <td class="light" id="e2"></td>
+                    <td class="dark" id="f2"></td>
+                    <td class="light" id="g2"></td>
+                    <td class="dark" id="h2"></td>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <td class="dark" id="a1"></td>
+                    <td class="light" id="b1"></td>
+                    <td class="dark" id="c1"></td>
+                    <td class="light" id="d1"></td>
+                    <td class="dark" id="e1"></td>
+                    <td class="light" id="f1"></td>
+                    <td class="dark" id="g1"></td>
+                    <td class="light" id="h1"></td>
+                </tr>
+            </tbody>
+        </table>
+		</center>
+		<script>
+		var socket;
+		
+		function create_solider(a, b, color = false)
+		{
+			var center = document.createElement("center"), img = document.createElement("img");
+			img.src = (color ? "white.png" : "black.png");
+			img.id="img-" + a + b;
+			img.style.width = "50px";
+			img.style.height = "50px";
+			img.draggable = true;
+			img.addEventListener("click", () => {
+				console.log(a + b);
+			});
+			center.appendChild(img);
+			document.getElementById(a + b).appendChild(center);
+		}
+		
+		function remove_solider(a, b)
+		{
+			document.getElementById(a + b).innerHTML = '';
+		}
+			
+		function drag(ev) {
+		  ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function onDrop(ev) {
+			console.log(ev);
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");
+			ev.target.appendChild(document.getElementById(data));
+		}
+	
+		function move_solider(a1, b1, a2, b2)
+		{
+			remove_solider(a1, b1);
+			create_solider(a2, b2);
+		}
+		
+		function connect()
+		{
+			socket = new WebSocket("ws://192.168.3.1:8080");
+			
+			// Connection opened
+			socket.addEventListener('open', function (event) {
+				start();
+			});
+			// Connection opened
+			socket.addEventListener('message', function (event) {
+				
+			});	
+			
+		}
+		
+		function start()
+		{
+			document.getElementById("center").removeChild(document.getElementById("startMenu"));
+		
+			// Black
+			create_solider("b", "8", false);
+			create_solider("d", "8", false);
+			create_solider("f", "8", false);
+			create_solider("h", "8", false);
+			create_solider("a", "7", false);
+			create_solider("c", "7", false);
+			create_solider("e", "7", false);
+			create_solider("g", "7", false);
+			create_solider("b", "6", false);
+			create_solider("d", "6", false);
+			create_solider("f", "6", false);
+			create_solider("h", "6", false);
+			
+			// White
+			create_solider("a", "1", true);
+			create_solider("c", "1", true);
+			create_solider("e", "1", true);
+			create_solider("g", "1", true);
+			create_solider("b", "2", true);
+			create_solider("d", "2", true);
+			create_solider("f", "2", true);
+			create_solider("h", "2", true);
+			create_solider("a", "3", true);
+			create_solider("c", "3", true);
+			create_solider("e", "3", true);
+			create_solider("g", "3", true);
+		}
+		</script>
+    </body>
+</html>
