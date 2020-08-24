@@ -82,9 +82,19 @@ class Game
 		this.board = {};
 		this.players = [connection1, connection2];
 		this.turn = false;
+		this.timer = 30;
 		this.new_board();
 		connection1.sendUTF("start;white");
 		connection2.sendUTF("start;black");
+		
+		setInterval(() => {
+			--this.timer;
+			
+			if(this.timer <= 0)
+			{
+				this.flip_turn();
+			}
+		}, 1000);
 	}
 	
 	new_board()
@@ -117,10 +127,27 @@ class Game
 		this.create_solider("e", "3", true);
 		this.create_solider("g", "3", true);
 	}
+	
+	reset_timer()
+	{
+		this.timer = 30;
+		this.send("timer;reset");
+	}
 
 	flip_turn()
 	{
+		if(this.turn)
+		{
+			this.players[1].sendUTF("turn;true");
+			this.players[0].sendUTF("turn;false");
+		}else
+		{
+			this.players[0].sendUTF("turn;true");
+			this.players[1].sendUTF("turn;false");
+		}
 		
+		this.turn = !this.turn;
+		this.reset_timer();
 	}
 	
 	create_solider(a, b, color = false, king = false)
@@ -144,6 +171,7 @@ class Game
 		this.remove_solider(a, b);
 		this.create_solider(a2, b2, solider.color, solider.king);
 		this.send("move;" + a + b + ";" + a2 + b2);
+		this.flip_turn();
 		
 		if(solider.color && b2 == 8)
 			this.send("king;" + a2 + b2);
@@ -155,6 +183,11 @@ class Game
 	eat(ab)
 	{
 		this.send("eat;" + ab);
+	}
+	
+	game_over(winner, reason)
+	{
+		this.send("game_over;" + winner + ";" + reason);
 	}
 	
 	send(message)

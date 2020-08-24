@@ -1,24 +1,21 @@
-import numpy as np
 global x
-
-
+from checkboard import Checkboard
+#a function that pritnt the board matrix
 def printcheckboard(x):
     print('\n'.join([''.join(['{:4}'.format(item) for item in row])
                      for row in x]))
 
-
+#a function that make a start board matrix
 def makecheckboard():
-    return [[1,0,1,0,1,0,1,0],[0,1,0,1,0,1,0,1],[1,0,1,0,1,0,1,0],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0],
-            [2,0,2,0,2,0,2,0],[0,2,0,2,0,2,0,2],[2,0,2,0,2,0,2,0]]
-
-
-def move(x,move):
-    pass
+    return Checkboard()
 
 
 def Main():
-    x = makecheckboard()
-    printcheckboard(x)
+    x = Checkboard()
+    x.print_board()
+    x.move([2,2],[3,3])
+    x.print_board()
+
 
 if __name__ == '__main__':
     Main()

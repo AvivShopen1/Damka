@@ -1,10 +1,11 @@
 
 # WS server example
-
+from _thread import *
+import threading
 import asyncio
 import websockets
 
-async def hello(websocket, path):
+async def hello(websocket):
     name = await websocket.recv()
     print(f"< {name}")
 
@@ -12,6 +13,7 @@ async def hello(websocket, path):
 
     await websocket.send(greeting)
     print(f"> {greeting}")
+
 
 start_server = websockets.serve(hello, "localhost", 8080)
 

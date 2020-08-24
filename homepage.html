@@ -129,7 +129,7 @@
 		</center>
 		<h1 style="position:absolute;right: 10%;margin-top:auto;margin-bottom:auto;top: 50%;bottom:0;">00:00</h1>
 		<script>
-		var server, color = null, board = {}, possible_moves = {}, current_move = null;
+		var server, color = null, board = {}, possible_moves = {}, current_move = null, my_turn = false;
 		
 		function create_solider(a, b, solider_color = false, king = false)
 		{
@@ -156,7 +156,7 @@
 			}
 		
 			center.addEventListener("mousedown", () => {
-				if(solider_color === color)
+				if(my_turn && solider_color === color)
 					create_possible_moves(a, b);
 			});
 			board[a + b] = {color: solider_color, king: king};
@@ -367,6 +367,8 @@
 				{
 					color = (args[1] === "white");
 					start();
+					if(!color)
+						my_turn = true;
 				}else if(args[0] === "move")
 				{
 					for(var i in possible_moves)
@@ -386,6 +388,15 @@
 						
 					remove_solider(args[1][0], args[1][1]);
 					create_solider(args[1][0], args[1][1], solider.color, true);
+				}else if(args[0] === "turn")
+				{
+					if(args[1] === "true")
+					{
+						my_turn = true;
+					}else
+					{
+						my_turn = false;
+					}
 				}
 			});	
 			
