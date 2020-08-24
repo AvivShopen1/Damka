@@ -127,28 +127,51 @@
             </tbody>
         </table>
 		</center>
+		<h1 style="position:absolute;right: 10%;margin-top:auto;margin-bottom:auto;top: 50%;bottom:0;">00:00</h1>
 		<script>
-		var socket;
+		var socket, board = {}, possible_moves = {};
 		
-		function create_solider(a, b, color = false)
+		function create_solider(a, b, color = false, king = false)
 		{
 			var center = document.createElement("center"), img = document.createElement("img");
+			center.style.position = "relative";
 			img.src = (color ? "white.png" : "black.png");
 			img.id="img-" + a + b;
 			img.style.width = "50px";
 			img.style.height = "50px";
 			img.draggable = true;
-			img.addEventListener("click", () => {
-				console.log(a + b);
-			});
 			center.appendChild(img);
+			
+			if(king)
+			{
+				let img = document.createElement("img");
+				img.src = "crown.png";
+				img.id = "crown-" + a + b;
+				img.style.position = "absolute";
+				img.style.right = "7px";
+				img.style.width = "50px";
+				img.style.height = "50px";
+				img.draggable = true;
+				center.appendChild(img);
+			}
+		
+			center.addEventListener("mousedown", () => {
+				create_possible_moves(a, b);
+			});
+			board[a + b] = {color: color, king: king};
 			document.getElementById(a + b).appendChild(center);
 		}
 		
-		function create_possible_move(a, b)
+		function create_possible_move(a, b, color = false)
 		{
+			if(a.charCodeAt(0) < 97 || a.charCodeAt(0) > 104)
+				return false;
+				
+			if(typeof(board[a + b]) !== "undefined")
+				return false;
+				
 			var center = document.createElement("center"), img = document.createElement("img");
-			img.src = "possible_move.png";
+			img.src = (color ? "possible_move_white.png" : "possible_move_black.png");
 			img.id="img-" + a + b;
 			img.style.width = "50px";
 			img.style.height = "50px";
@@ -156,29 +179,112 @@
 			img.addEventListener("click", () => {
 				console.log(a + b);
 			});
+			img.addEventListener("dragover", () => {
+				event.preventDefault();
+			});
 			img.addEventListener("drop", (event) => {
 				console.log("moved to: " + a + b);
 			});
 			center.appendChild(img);
-			document.getElementById(a + b).appendChild(center);
+			let square = document.getElementById(a + b);
+			possible_moves[a + b] = {color: color, square: square};
+			square.appendChild(center);
+			return true;
+		}
+		
+		function remove_possible_move(a, b)
+		{
+			if(typeof(possible_moves[a + b]) === "undefined")
+				return;
+				
+			document.getElementById(a + b).innerHTML = '';
+		}
+		
+		function clear_board()
+		{
+			for(var i in board)
+			{
+				document.getElementById(i).innerHTML = '';
+				delete board[i];
+			}
+		}
+		
+		function create_possible_moves(a, b)
+		{
+			if(typeof(board[a + b]) === "undefined")
+				return;
+				
+			for(var i in possible_moves)
+			{
+				possible_moves[i].square.innerHTML = '';
+				delete possible_moves[i];
+			}
+		
+			let solider = board[a + b];
+			if(solider.king)
+			{
+				var i;
+				let y = parseInt(b);
+				
+				for(i = y + 1; i < 9; i++)
+				{
+					if(!create_possible_move(addChar(a, i - y), i, solider.color))
+						break;
+				}
+				
+				for(i = y + 1; i < 9; i++)
+				{
+					if(!create_possible_move(addChar(a, -(i - y)), i, solider.color))
+						break;
+				}
+				
+				for(i = y - 1; i > 0; i--)
+				{
+					if(!create_possible_move(addChar(a, y - i), i, solider.color))
+						break;
+				}
+				
+				for(i = y - 1; i > 0; i--)
+				{
+					if(!create_possible_move(addChar(a, -(y - i)), i, solider.color))
+						break;
+				}
+			}else
+			{
+				// White
+				if(solider.color)
+				{
+					let y = parseInt(b) + 1;
+					create_possible_move(addChar(a, 1), y, true);
+					create_possible_move(addChar(a, -1), y, true);
+				}else
+				{
+					let y = parseInt(b) - 1;
+					create_possible_move(addChar(a, 1), y, false);
+					create_possible_move(addChar(a, -1), y, false);
+				}
+			}
+		}
+		
+		function addChar(charac, add)
+		{
+			if(charac === null || charac.length !== 1)
+				return null;
+				
+			return String.fromCharCode(charac.charCodeAt(0) + add);
 		}
 		
 		function remove_solider(a, b)
 		{
 			document.getElementById(a + b).innerHTML = '';
+			if(typeof(board[a + b]) !== "undefined")
+				delete board[a + b];
 		}
 			
 		function drag(ev) {
 		  ev.dataTransfer.setData("text", ev.target.id);
 		}
 
-		function onDrop(ev) {
-			console.log(ev);
-			ev.preventDefault();
-			var data = ev.dataTransfer.getData("text");
-			ev.target.appendChild(document.getElementById(data));
-		}
-	
 		function move_solider(a1, b1, a2, b2)
 		{
 			remove_solider(a1, b1);
