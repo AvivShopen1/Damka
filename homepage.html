@@ -1,145 +1,231 @@
-<html>
+﻿<html>
 <head>
-        <title></title>
-        <meta charset="UTF-8">
-        <style>
-            .chess-board { border-spacing: 0; border-collapse: collapse; }
-            .chess-board th { padding: .5em; }
-            .chess-board td { border: 1px solid; width: 4em; height: 4em; }
-            .chess-board .light { background: #E2CC97; }
-            .chess-board .dark { background: #8D4C4C; }
-			.center {
-				display: block;
-				margin-left: auto;
-				margin-right: auto
-			}
-        </style>
-    </head>
-    <body>
-	<center id="center">
-		<div id="startMenu" style="position:absolute;width:100%;height:100%;background:#FFFFFFCC">
-		<b><a style="font-size:100;position: absolute;margin-top: 40px;margin-left: auto;margin-right: auto;left: 0;right: 0;">דמקה</a></b>
-		<button onclick="connect();" style="outline:none;position:absolute; margin-top:250px; width:250px; height:100px; margin-left: auto; margin-right: auto; left: 0; right: 0; background: #27BF2C; color: white; font-size:50;"><b>!שחק</b></button>
-		
-		</div>
+	<title>דמקה</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	
-        <table class="chess-board">
-            <tbody>
-                <tr>
-                    <th></th>
-                    <th>a</th>
-                    <th>b</th>
-                    <th>c</th>
-                    <th>d</th>
-                    <th>e</th>
-                    <th>f</th>
-                    <th>g</th>
-                    <th>h</th>
-                </tr>
-                <tr>
-                    <th>8</th>
-                    <td class="light" ondrop="onDrop" id="a8"></td>
-                    <td class="dark" id="b8"></td>
-                    <td class="light" id="c8"></td>
-                    <td class="dark" id="d8"></td>
-                    <td class="light" id="e8"></td>
-                    <td class="dark" id="f8"></td>
-                    <td class="light" id="g8"></td>
-                    <td class="dark" id="h8"></td>
-                </tr>
-                <tr>
-                    <th>7</th>
-                    <td class="dark" id="a7"></td>
-                    <td class="light" id="b7"></td>
-                    <td class="dark" id="c7"></td>
-                    <td class="light" id="d7"></td>
-                    <td class="dark" id="e7"></td>
-                    <td class="light" id="f7"></td>
-                    <td class="dark" id="g7"></td>
-                    <td class="light" id="h7"></td>
-                </tr>
-                <tr>
-                    <th>6</th>
-                    <td class="light" id="a6"></td>
-                    <td class="dark" id="b6"></td>
-                    <td class="light" id="c6"></td>
-                    <td class="dark" id="d6"></td>
-                    <td class="light" id="e6"></td>
-                    <td class="dark" id="f6"></td>
-                    <td class="light" id="g6"></td>
-                    <td class="dark" id="h6"></td>
-                </tr>
-                <tr>
-                    <th>5</th>
-                    <td class="dark" id="a5"></td>
-                    <td class="light" id="b5"></td>
-                    <td class="dark" id="c5"></td>
-                    <td class="light" id="d5"></td>
-                    <td class="dark" id="e5"></td>
-                    <td class="light" id="f5"></td>
-                    <td class="dark" id="g5"></td>
-                    <td class="light" id="h5"></td>
-                </tr>
-                <tr>
-                    <th>4</th>
-                    <td class="light" id="a4"></td>
-                    <td class="dark" id="b4"></td>
-                    <td class="light" id="c4"></td>
-                    <td class="dark" id="d4"></td>
-                    <td class="light" id="e4"></td>
-                    <td class="dark" id="f4"></td>
-                    <td class="light" id="g4"></td>
-                    <td class="dark" id="h4"></td>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <td class="dark" id="a3"></td>
-                    <td class="light" id="b3"></td>
-                    <td class="dark" id="c3"></td>
-                    <td class="light" id="d3"></td>
-                    <td class="dark" id="e3"></td>
-                    <td class="light" id="f3"></td>
-                    <td class="dark" id="g3"></td>
-                    <td class="light" id="h3"></td>
-                </tr>
-                <tr>
-                    <th>2</th>
-                    <td class="light" id="a2"></td>
-                    <td class="dark" id="b2"></td>
-                    <td class="light" id="c2"></td>
-                    <td class="dark" id="d2"></td>
-                    <td class="light" id="e2"></td>
-                    <td class="dark" id="f2"></td>
-                    <td class="light" id="g2"></td>
-                    <td class="dark" id="h2"></td>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <td class="dark" id="a1"></td>
-                    <td class="light" id="b1"></td>
-                    <td class="dark" id="c1"></td>
-                    <td class="light" id="d1"></td>
-                    <td class="dark" id="e1"></td>
-                    <td class="light" id="f1"></td>
-                    <td class="dark" id="g1"></td>
-                    <td class="light" id="h1"></td>
-                </tr>
-            </tbody>
-        </table>
+	<meta charset="UTF-8">
+	<style>
+		.chess-board {
+			margin: 0;
+			position: absolute;
+			right: 50%;
+			top: 50%;
+			-ms-transform: translateX(-50%);
+			transform: translateX(-50%);
+			-ms-transform: translateY(-50%);
+			transform: translateY(-50%);
+			border-spacing: 0;
+			border-collapse: collapse;
+		}
+
+			.chess-board th {
+				padding: .5em;
+			}
+
+			.chess-board td {
+				border: 1px solid;
+				width: 4em;
+				height: 4em;
+			}
+
+			.chess-board .light {
+				background: #E2CC97;
+			}
+
+			.chess-board .dark {
+				background: #8D4C4C;
+			}
+
+		.chess-board-position {
+			margin: 0;
+			position: absolute;
+			display: block;
+			right: 50%;
+			top: 50%;
+			-ms-transform: translateX(-50%), translateY(-50%);
+			transform: translateX(-50%), translateY(-50%);
+		}
+
+		.unselectable {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			-o-user-select: none;
+		}
+
+		.vertical-center {
+			margin: 0;
+			position: absolute;
+			top: 50%;
+			-ms-transform: translateY(-50%);
+			transform: translateY(-50%);
+		}
+
+		body {
+			font-family: Suez;
+		}
+
+		@font-face {
+			font-family: 'Suez';
+			src: url('SuezOne-Regular.ttf');
+		}
+	</style>
+</head>
+
+    <body style="position: relative; background-image: url('background.jpg');">
+
+		<center id="center">
+			<div id="startMenu">
+
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+
+				<b>
+					<a style="font-size:100px;">דמקה</a>
+				</b>
+
+				<br />
+				<br />
+				<br />
+
+				<button id="playButton" onclick="connect();" class="btn btn-success" style="width: 400px; height: 100px; font-size: 50px;">!שחק</button>
+			</div>
 		</center>
-		<h1 style="position:absolute;right: 10%;margin-top:auto;margin-bottom:auto;top: 50%;bottom:0;">00:00</h1>
+	
+		<div id="gameMenu" style="visibility: hidden;">
+			<table class="chess-board unselectable" unselectable="on" onselect="return false;" draggable="false">
+				<tbody>
+					<tr>
+						<th></th>
+						<th>a</th>
+						<th>b</th>
+						<th>c</th>
+						<th>d</th>
+						<th>e</th>
+						<th>f</th>
+						<th>g</th>
+						<th>h</th>
+					</tr>
+					<tr>
+						<th>8</th>
+						<td class="light" ondrop="onDrop" id="a8"></td>
+						<td class="dark" id="b8"></td>
+						<td class="light" id="c8"></td>
+						<td class="dark" id="d8"></td>
+						<td class="light" id="e8"></td>
+						<td class="dark" id="f8"></td>
+						<td class="light" id="g8"></td>
+						<td class="dark" id="h8"></td>
+					</tr>
+					<tr>
+						<th>7</th>
+						<td class="dark" id="a7"></td>
+						<td class="light" id="b7"></td>
+						<td class="dark" id="c7"></td>
+						<td class="light" id="d7"></td>
+						<td class="dark" id="e7"></td>
+						<td class="light" id="f7"></td>
+						<td class="dark" id="g7"></td>
+						<td class="light" id="h7"></td>
+					</tr>
+					<tr>
+						<th>6</th>
+						<td class="light" id="a6"></td>
+						<td class="dark" id="b6"></td>
+						<td class="light" id="c6"></td>
+						<td class="dark" id="d6"></td>
+						<td class="light" id="e6"></td>
+						<td class="dark" id="f6"></td>
+						<td class="light" id="g6"></td>
+						<td class="dark" id="h6"></td>
+					</tr>
+					<tr>
+						<th>5</th>
+						<td class="dark" id="a5"></td>
+						<td class="light" id="b5"></td>
+						<td class="dark" id="c5"></td>
+						<td class="light" id="d5"></td>
+						<td class="dark" id="e5"></td>
+						<td class="light" id="f5"></td>
+						<td class="dark" id="g5"></td>
+						<td class="light" id="h5"></td>
+					</tr>
+					<tr>
+						<th>4</th>
+						<td class="light" id="a4"></td>
+						<td class="dark" id="b4"></td>
+						<td class="light" id="c4"></td>
+						<td class="dark" id="d4"></td>
+						<td class="light" id="e4"></td>
+						<td class="dark" id="f4"></td>
+						<td class="light" id="g4"></td>
+						<td class="dark" id="h4"></td>
+					</tr>
+					<tr>
+						<th>3</th>
+						<td class="dark" id="a3"></td>
+						<td class="light" id="b3"></td>
+						<td class="dark" id="c3"></td>
+						<td class="light" id="d3"></td>
+						<td class="dark" id="e3"></td>
+						<td class="light" id="f3"></td>
+						<td class="dark" id="g3"></td>
+						<td class="light" id="h3"></td>
+					</tr>
+					<tr>
+						<th>2</th>
+						<td class="light" id="a2"></td>
+						<td class="dark" id="b2"></td>
+						<td class="light" id="c2"></td>
+						<td class="dark" id="d2"></td>
+						<td class="light" id="e2"></td>
+						<td class="dark" id="f2"></td>
+						<td class="light" id="g2"></td>
+						<td class="dark" id="h2"></td>
+					</tr>
+					<tr>
+						<th>1</th>
+						<td class="dark" id="a1"></td>
+						<td class="light" id="b1"></td>
+						<td class="dark" id="c1"></td>
+						<td class="light" id="d1"></td>
+						<td class="dark" id="e1"></td>
+						<td class="light" id="f1"></td>
+						<td class="dark" id="g1"></td>
+						<td class="light" id="h1"></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div id="infoInterface" style="position: absolute; top: 10%; background-color: rgba(67, 37, 37, 0.65); height: 700px; width: 35%; right: 100px;">
+				<h1 id="timer">00:00</h1>
+			</div>
+		</div>
+
 		<script>
-		var server, color = null, board = {}, possible_moves = {}, current_move = null, my_turn = false;
+		var server, color = null, board = {}, possible_moves = {}, current_move = null, my_turn = false, timer = null;
 		
 		function create_solider(a, b, solider_color = false, king = false)
 		{
 			var center = document.createElement("center"), img = document.createElement("img");
 			center.style.position = "relative";
 			img.src = (solider_color ? "white.png" : "black.png");
-			img.id="img-" + a + b;
+			img.id = "img-" + a + b;
 			img.style.width = "50px";
 			img.style.height = "50px";
-			img.draggable = true;
+			img.draggable = (color === solider_color);
 			center.appendChild(img);
 			
 			if(king)
@@ -151,7 +237,7 @@
 				img.style.right = "7px";
 				img.style.width = "50px";
 				img.style.height = "50px";
-				img.draggable = true;
+				img.draggable = (color === solider_color);
 				center.appendChild(img);
 			}
 		
@@ -163,7 +249,7 @@
 			document.getElementById(a + b).appendChild(center);
 		}
 		
-		function create_possible_move(a, b, color = false, canEat = false)
+		function create_possible_move(a, b, solider_color = false, canEat = false)
 		{
 			if(a.charCodeAt(0) < 97 || a.charCodeAt(0) > 104)
 				return false;
@@ -182,28 +268,37 @@
 			}
 				
 			var center = document.createElement("center"), img = document.createElement("img");
-			img.src = (color ? "possible_move_white.png" : "possible_move_black.png");
-			img.id="img-" + a + b;
+			img.src = (solider_color ? "possible_move_white.png" : "possible_move_black.png");
+			img.id = "img-" + a + b;
 			img.style.width = "50px";
 			img.style.height = "50px";
-			img.draggable = true;
-			img.addEventListener("click", () => {
-				console.log(a + b);
+			img.draggable = false;
+			img.addEventListener("click", (event) => {
+				if(current_move === null)
+					return;
+					
+				if(canEat !== false)
+					server.send("eat;" + canEat);
+
+				server.send("move;" + current_move + ";" + a + b);
 			});
+
 			img.addEventListener("dragover", () => {
 				event.preventDefault();
 			});
+
 			img.addEventListener("drop", (event) => {
 				if(current_move === null)
 					return;
 					
 				if(canEat !== false)
 					server.send("eat;" + canEat);
+
 				server.send("move;" + current_move + ";" + a + b);
 			});
 			center.appendChild(img);
 			let square = document.getElementById(a + b);
-			possible_moves[a + b] = {color: color, square: square};
+			possible_moves[a + b] = {color: solider_color, square: square};
 			square.appendChild(center);
 			return true;
 		}
@@ -214,6 +309,15 @@
 				return;
 				
 			document.getElementById(a + b).innerHTML = '';
+		}
+
+		function clear_possible_moves()
+		{
+			for(var i in possible_moves)
+			{
+				possible_moves[i].square.innerHTML = '';
+				delete possible_moves[i];
+			}
 		}
 		
 		function clear_board()
@@ -235,11 +339,7 @@
 			if(typeof(board[a + b]) === "undefined")
 				return;
 				
-			for(var i in possible_moves)
-			{
-				possible_moves[i].square.innerHTML = '';
-				delete possible_moves[i];
-			}
+			clear_possible_moves();
 		
 			current_move = a + b;
 			let solider = board[a + b];
@@ -341,10 +441,6 @@
 			if(typeof(board[a + b]) !== "undefined")
 				delete board[a + b];
 		}
-			
-		function drag(ev) {
-		  ev.dataTransfer.setData("text", ev.target.id);
-		}
 
 		function move_solider(a1, b1, a2, b2)
 		{
@@ -352,15 +448,36 @@
 			remove_solider(a1, b1);
 			create_solider(a2, b2, solider.color, solider.king);
 		}
+
+		function update_timer()
+		{
+			let timerElem = document.getElementById("timer");
+			if(timer !== null && timerElem !== null)
+			{
+				let min = Math.floor(timer / 60), sec = timer % 60;
+
+				if(min < 10)
+					min = "0" + min;
+
+				if(sec < 10)
+					sec = "0" + sec;
+
+				timerElem.innerHTML = min + ":" + sec;
+			}
+		}
 		
 		function connect()
 		{
+			let playButton = document.getElementById("playButton");
+			playButton.disabled = true;
+			playButton.className = "btn btn-secondary";
+			playButton.innerHTML = "...מחפש שחקנים";
+
 			server = new WebSocket("ws://localhost:8080", "echo-protocol");
 			
-			// Connection opened
 			server.addEventListener('open', function (event) {
 			});
-			// Connection opened
+
 			server.addEventListener('message', function (message) {
 				var args = message.data.split(";");
 				if(args[0] === "start")
@@ -396,6 +513,14 @@
 					}else
 					{
 						my_turn = false;
+						clear_possible_moves();
+					}
+				}else if(args[0] === "timer")
+				{
+					if(args[1] === "reset")
+					{
+						timer = 30;
+						update_timer();
 					}
 				}
 			});	
@@ -404,7 +529,13 @@
 		
 		function start()
 		{
-			document.getElementById("center").removeChild(document.getElementById("startMenu"));
+			let playButton = document.getElementById("playButton");
+			playButton.disabled = false;
+			playButton.className = "btn btn-success";
+			playButton.innerHTML = "!שחק";
+
+			document.getElementById("startMenu").style.visibility = "hidden";
+			document.getElementById("gameMenu").style.visibility = "visible";
 		
 			// Black
 			create_solider("b", "8", false);
@@ -433,6 +564,13 @@
 			create_solider("c", "3", true);
 			create_solider("e", "3", true);
 			create_solider("g", "3", true);
+
+			timer = 30;
+			update_timer();
+			setInterval(() => {
+				timer--;
+				update_timer();
+			}, 1000);
 		}
 		</script>
     </body>
