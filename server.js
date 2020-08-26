@@ -1,56 +1,55 @@
-var WebSocketServer = require('websocket').server;
-var http = require('http');
+// Constants (Modules)
+const 
+WebSocketServer = require('websocket').server, 
+http = require('http'), 
+shortid = require('shortid');
  
-var board = {};
-var queue = [];
-var games = [];
+ // Variables (Global Scope)
+var queue = [], games = {},
 
-var server = http.createServer(function(request, response) {
+// Open a websocket server based on http (for browser connections)
+
+server = http.createServer(function(request, response) {
+	// Ignore web pages requests
     console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
     response.end();
 });
+
 server.listen(8080, function() {
-    console.log((new Date()) + ' Server is listening on port 8080');
+    console.log('Server is listening on port 8080');
 });
+
  
 wsServer = new WebSocketServer({
     httpServer: server,
-    // You should not use autoAcceptConnections for production
-    // applications, as it defeats all standard cross-origin protection
-    // facilities built into the protocol and the browser.  You should
-    // *always* verify the connection's origin and decide whether or not
-    // to accept it.
     autoAcceptConnections: false
 });
  
-function originIsAllowed(origin) {
-  // put logic here to detect whether the specified origin is allowed.
-  return true;
+function addChar(charac, add)
+{
+	if(charac === null || charac.length !== 1)
+		return null;
+		
+	return String.fromCharCode(charac.charCodeAt(0) + add);
 }
  
 wsServer.on('request', function(request) {
-    if (!originIsAllowed(request.origin)) {
-      // Make sure we only accept requests from an allowed origin
-      request.reject();
-      console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
-      return;
-    }
 	
-
     var connection = request.accept('echo-protocol', request.origin);
 	
     console.log((new Date()) + ' Connection accepted.');
 	
     if(queue.length == 0)
+	{
 		queue.push(connection);
-	else
+		connection.game = null;
+	}else
 	{
 		let player1 = queue.shift();
 		let game = new Game(player1, connection);
 		connection.game = game;
 		player1.game = game;
-		games.push(game);
 	}
 	
 	
@@ -58,19 +57,33 @@ wsServer.on('request', function(request) {
 		if(connection.game === null)
 			return;
 		
-		let args = message.utf8Data.split(";");
-		console.log(args);
+		let args = message.utf8Data.split(";"), game = connection.game;
+		
 		if(args[0] === "move")
 		{
-			connection.game.move_solider(args[1][0], args[1][1], args[2][0], args[2][1]);
+			game.move_solider(args[1][0], args[1][1], args[2][0], args[2][1]);
 		}else if(args[0] === "eat")
 		{
-			connection.game.eat(args[1]);
+			game.eat(args[1]);
+		}else if(args[0] === "move_again")
+		{
+			if(game.turn !== connection.color)
+				game.flip_turn();
 		}
     });
 	
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+		
+		if(connection.game === null)
+		{
+			// In the event of a menu disconnection, clear the queue.
+			queue.length = 0;
+		}else
+		{
+			connection.game.winner = !connection.color;
+			connection.game.game_over("quit");
+		}
     });
 });
 
@@ -79,15 +92,23 @@ class Game
 	
 	constructor(connection1, connection2)
 	{
+		this.id = shortid.generate();
 		this.board = {};
 		this.players = [connection1, connection2];
 		this.turn = false;
 		this.timer = 30;
+		this.winner = null;
+		this.ended = false;
 		this.new_board();
+		this.solider_count = [12, 12];
+		
+		connection1.color = true;
 		connection1.sendUTF("start;white");
+		
+		connection2.color = false;
 		connection2.sendUTF("start;black");
 		
-		setInterval(() => {
+		this.timer_interval = setInterval(() => {
 			--this.timer;
 			
 			if(this.timer <= 0)
@@ -95,6 +116,8 @@ class Game
 				this.flip_turn();
 			}
 		}, 1000);
+		
+		games[this.id] = this;
 	}
 	
 	new_board()
@@ -161,6 +184,17 @@ class Game
 			delete this.board[a + b];
 	}
 	
+	hasSolider(a, b)
+	{
+		return a.charCodeAt(0) < 97 || a.charCodeAt(0) > 104 || b < 1 || b > 8 || typeof(this.board[a + b]) !== "undefined";
+	}
+	
+	canMove(a, b)
+	{
+		let y = parseInt(b);
+		return !(this.hasSolider(addChar(a, 1), y + 1) && this.hasSolider(addChar(a, -1), y + 1) && this.hasSolider(addChar(a, 1), y - 1) && this.hasSolider(addChar(a, -1), y - 1));
+	}
+	
 	move_solider(a, b, a2, b2)
 	{
 		let solider = this.board[a + b];
@@ -171,6 +205,7 @@ class Game
 		this.remove_solider(a, b);
 		this.create_solider(a2, b2, solider.color, solider.king);
 		this.send("move;" + a + b + ";" + a2 + b2);
+		
 		this.flip_turn();
 		
 		if(solider.color && b2 == 8)
@@ -182,12 +217,56 @@ class Game
 	
 	eat(ab)
 	{
+		let solider = this.board[ab];
+		
+		if(typeof(solider) === "undefined")
+			return;
+		
+		if(solider.color)
+			--this.solider_count[0];
+		else
+			--this.solider_count[1];
+		
+		this.winner = this.getWinner();
+		if(this.winner !== null)
+		{
+			console.log(this.winner);
+			// Find the reason
+			let reason = "defeat_soliders";
+			
+			this.game_over(reason);
+		}
+		
+		delete this.board[ab];
 		this.send("eat;" + ab);
 	}
 	
-	game_over(winner, reason)
+	/**
+	 * Returns the winner of the match as a boolean value, true - white, false - black, null - game is not over
+	 *
+	 * @returns bool|null
+	 */
+	getWinner()
 	{
-		this.send("game_over;" + winner + ";" + reason);
+		if(this.solider_count[0] <= 0)
+			return false;
+		
+		if(this.solider_count[1] <= 0)
+			return true;
+		
+		return null;
+	}
+	
+	game_over(reason)
+	{
+		if(this.winner === null || this.ended)
+			return;
+		
+		this.ended = true;
+		clearInterval(this.timer_interval);
+		this.send("game_over;" + this.winner + ";" + reason);
+		
+		delete games[this.id];
 	}
 	
 	send(message)

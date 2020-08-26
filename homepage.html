@@ -1,83 +1,82 @@
 ﻿<html>
-<head>
-	<title>דמקה</title>
+	<head>
+		<title>דמקה</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
-	<meta charset="UTF-8">
-	<style>
-		.chess-board {
-			margin: 0;
-			position: absolute;
-			right: 50%;
-			top: 50%;
-			-ms-transform: translateX(-50%);
-			transform: translateX(-50%);
-			-ms-transform: translateY(-50%);
-			transform: translateY(-50%);
-			border-spacing: 0;
-			border-collapse: collapse;
-		}
-
-			.chess-board th {
-				padding: .5em;
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="script.js"></script>
+		<meta charset="UTF-8">
+		<style>
+			.chess-board {
+				margin: 0;
+				position: absolute;
+				right: 50%;
+				top: 50%;
+				-ms-transform: translateX(-50%);
+				transform: translateX(-50%);
+				-ms-transform: translateY(-50%);
+				transform: translateY(-50%);
+				border-spacing: 0;
+				border-collapse: collapse;
 			}
 
-			.chess-board td {
-				border: 1px solid;
-				width: 4em;
-				height: 4em;
+				.chess-board th {
+					padding: .5em;
+				}
+
+				.chess-board td {
+					border: 1px solid;
+					width: 4em;
+					height: 4em;
+				}
+
+				.chess-board .light {
+					background: #E2CC97;
+				}
+
+				.chess-board .dark {
+					background: #8D4C4C;
+				}
+
+			.chess-board-position {
+				margin: 0;
+				position: absolute;
+				display: block;
+				right: 50%;
+				top: 50%;
+				-ms-transform: translateX(-50%), translateY(-50%);
+				transform: translateX(-50%), translateY(-50%);
 			}
 
-			.chess-board .light {
-				background: #E2CC97;
+			.unselectable {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 			}
 
-			.chess-board .dark {
-				background: #8D4C4C;
+			.vertical-center {
+				margin: 0;
+				position: absolute;
+				top: 50%;
+				-ms-transform: translateY(-50%);
+				transform: translateY(-50%);
 			}
 
-		.chess-board-position {
-			margin: 0;
-			position: absolute;
-			display: block;
-			right: 50%;
-			top: 50%;
-			-ms-transform: translateX(-50%), translateY(-50%);
-			transform: translateX(-50%), translateY(-50%);
-		}
+			body {
+				font-family: Suez;
+			}
 
-		.unselectable {
-			-moz-user-select: none;
-			-webkit-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			-o-user-select: none;
-		}
+			@font-face {
+				font-family: 'Suez';
+				src: url('SuezOne-Regular.ttf');
+			}
+		</style>
+	</head>
 
-		.vertical-center {
-			margin: 0;
-			position: absolute;
-			top: 50%;
-			-ms-transform: translateY(-50%);
-			transform: translateY(-50%);
-		}
-
-		body {
-			font-family: Suez;
-		}
-
-		@font-face {
-			font-family: 'Suez';
-			src: url('SuezOne-Regular.ttf');
-		}
-	</style>
-</head>
-
-    <body style="position: relative; background-image: url('background.jpg');">
+	<body style="position: relative; background-image: url('background.jpg');">
 
 		<center id="center">
 			<div id="startMenu">
@@ -103,7 +102,7 @@
 				<button id="playButton" onclick="connect();" class="btn btn-success" style="width: 400px; height: 100px; font-size: 50px;">!שחק</button>
 			</div>
 		</center>
-	
+
 		<div id="gameMenu" style="visibility: hidden;">
 			<table class="chess-board unselectable" unselectable="on" onselect="return false;" draggable="false">
 				<tbody>
@@ -210,368 +209,45 @@
 			</table>
 
 			<div id="infoInterface" style="position: absolute; top: 10%; background-color: rgba(67, 37, 37, 0.65); height: 700px; width: 35%; right: 100px;">
-				<h1 id="timer">00:00</h1>
+				<center>
+					<br />
+
+					<u>
+						<b>
+							<a id="yourColor" style="font-size: 40px;"></a>
+						</b>
+					</u>
+
+					<br />
+					<br />
+					<br />
+
+					<div id="scores" style="font-size: 35px;">
+						<a id="scoreWhite" style="color: #FFFFFF">0</a>
+						:
+						<a id="scoreBlack" style="color: #000000">0</a>
+					</div>
+
+					<br />
+					<br />
+					<br />
+
+					<div id="turn" style="color: #FF0000">
+						<a id="turnStatus" style="font-size: 40px;">.חכה לתורך</a>
+						<h1 id="timer">00:00</h1>
+					</div>
+
+					<br />
+					<br />
+					<br />
+
+					<div id="winnerDisplay" style="visibility: hidden;">
+						<a id="winnerColor" style="font-size: 50px;"></a>
+						<br/>
+						<a id="winnerReason" style="font-size: 40px"></a>
+					</div>
+				</center>
 			</div>
 		</div>
-
-		<script>
-		var server, color = null, board = {}, possible_moves = {}, current_move = null, my_turn = false, timer = null;
-		
-		function create_solider(a, b, solider_color = false, king = false)
-		{
-			var center = document.createElement("center"), img = document.createElement("img");
-			center.style.position = "relative";
-			img.src = (solider_color ? "white.png" : "black.png");
-			img.id = "img-" + a + b;
-			img.style.width = "50px";
-			img.style.height = "50px";
-			img.draggable = (color === solider_color);
-			center.appendChild(img);
-			
-			if(king)
-			{
-				let img = document.createElement("img");
-				img.src = "crown.png";
-				img.id = "crown-" + a + b;
-				img.style.position = "absolute";
-				img.style.right = "7px";
-				img.style.width = "50px";
-				img.style.height = "50px";
-				img.draggable = (color === solider_color);
-				center.appendChild(img);
-			}
-		
-			center.addEventListener("mousedown", () => {
-				if(my_turn && solider_color === color)
-					create_possible_moves(a, b);
-			});
-			board[a + b] = {color: solider_color, king: king};
-			document.getElementById(a + b).appendChild(center);
-		}
-		
-		function create_possible_move(a, b, solider_color = false, canEat = false)
-		{
-			if(a.charCodeAt(0) < 97 || a.charCodeAt(0) > 104)
-				return false;
-				
-			if(b < 1 || b > 8)
-				return false;
-				
-			if(typeof(board[a + b]) !== "undefined")
-			{
-				if(!canEatSolider(current_move, a + b))
-					return false;
-					
-				let num1 = a.charCodeAt(0) - current_move[0].charCodeAt(0), num2 = parseInt(b) - parseInt(current_move[1]);
-				create_possible_move(addChar(a, num1), parseInt(b) + num2, color, a + b);
-				return false;
-			}
-				
-			var center = document.createElement("center"), img = document.createElement("img");
-			img.src = (solider_color ? "possible_move_white.png" : "possible_move_black.png");
-			img.id = "img-" + a + b;
-			img.style.width = "50px";
-			img.style.height = "50px";
-			img.draggable = false;
-			img.addEventListener("click", (event) => {
-				if(current_move === null)
-					return;
-					
-				if(canEat !== false)
-					server.send("eat;" + canEat);
-
-				server.send("move;" + current_move + ";" + a + b);
-			});
-
-			img.addEventListener("dragover", () => {
-				event.preventDefault();
-			});
-
-			img.addEventListener("drop", (event) => {
-				if(current_move === null)
-					return;
-					
-				if(canEat !== false)
-					server.send("eat;" + canEat);
-
-				server.send("move;" + current_move + ";" + a + b);
-			});
-			center.appendChild(img);
-			let square = document.getElementById(a + b);
-			possible_moves[a + b] = {color: solider_color, square: square};
-			square.appendChild(center);
-			return true;
-		}
-		
-		function remove_possible_move(a, b)
-		{
-			if(typeof(possible_moves[a + b]) === "undefined")
-				return;
-				
-			document.getElementById(a + b).innerHTML = '';
-		}
-
-		function clear_possible_moves()
-		{
-			for(var i in possible_moves)
-			{
-				possible_moves[i].square.innerHTML = '';
-				delete possible_moves[i];
-			}
-		}
-		
-		function clear_board()
-		{
-			for(var i in board)
-			{
-				document.getElementById(i).innerHTML = '';
-				delete board[i];
-			}
-		}
-		
-		function exists(a, b)
-		{
-			return typeof(board[a + b]) !== "undefined";
-		}
-		
-		function create_possible_moves(a, b)
-		{
-			if(typeof(board[a + b]) === "undefined")
-				return;
-				
-			clear_possible_moves();
-		
-			current_move = a + b;
-			let solider = board[a + b];
-			if(solider.king)
-			{
-				var i;
-				let y = parseInt(b);
-				
-				for(i = y + 1; i < 9; i++)
-				{
-					if(!create_possible_move(addChar(a, i - y), i, solider.color))
-						break;
-				}
-				
-				for(i = y + 1; i < 9; i++)
-				{
-					if(!create_possible_move(addChar(a, -(i - y)), i, solider.color))
-						break;
-				}
-				
-				for(i = y - 1; i > 0; i--)
-				{
-					if(!create_possible_move(addChar(a, y - i), i, solider.color))
-						break;
-				}
-				
-				for(i = y - 1; i > 0; i--)
-				{
-					if(!create_possible_move(addChar(a, -(y - i)), i, solider.color))
-						break;
-				}
-			}else
-			{
-				// White
-				if(solider.color)
-				{
-					let y = parseInt(b) + 1;
-					var x = addChar(a, 1);
-					if(typeof(board[x + y]) === "undefined")
-					{
-						create_possible_move(x, y, true);
-					}else if(board[x + y].color !== solider.color)
-					{
-						create_possible_move(addChar(x, 1), y + 1, true, x + y);
-					}
-					
-					x = addChar(a, -1);
-					if(typeof(board[x + y]) === "undefined")
-					{
-						create_possible_move(x, y, true);
-					}else if(board[x + y].color !== solider.color)
-					{
-						create_possible_move(addChar(x, -1), y + 1, true, x + y);
-					}
-				}else
-				{
-					let y = parseInt(b) - 1;
-					var x = addChar(a, 1);
-					if(typeof(board[x + y]) === "undefined")
-					{
-						create_possible_move(x, y, false);
-					}else if(board[x + y].color !== solider.color)
-					{
-						create_possible_move(addChar(x, 1), y - 1, false, x + y);
-					}
-					
-					x = addChar(a, -1);
-					if(typeof(board[x + y]) === "undefined")
-					{
-						create_possible_move(x, y, false);
-					}else if(board[x + y].color !== solider.color)
-					{
-						create_possible_move(addChar(x, -1), y - 1, false, x + y);
-					}
-				}
-			}
-		}
-		
-		function canEatSolider(ab, ab2)
-		{
-			if(typeof(board[ab2]) === "undefined" || typeof(board[ab]) === "undefined")
-				return false;
-				
-			let a1 = ab[0], a2 = ab2[0], b1 = parseInt(ab[1]), b2 = parseInt(ab2[1]);
-			return board[ab2].color !== board[ab].color && Math.abs(a1.charCodeAt(0) - a2.charCodeAt(0)) == 1 && Math.abs(b1 - b2) == 1;
-		}
-		
-		function addChar(charac, add)
-		{
-			if(charac === null || charac.length !== 1)
-				return null;
-				
-			return String.fromCharCode(charac.charCodeAt(0) + add);
-		}
-		
-		function remove_solider(a, b)
-		{
-			document.getElementById(a + b).innerHTML = '';
-			if(typeof(board[a + b]) !== "undefined")
-				delete board[a + b];
-		}
-
-		function move_solider(a1, b1, a2, b2)
-		{
-			let solider = board[a1 + b1];
-			remove_solider(a1, b1);
-			create_solider(a2, b2, solider.color, solider.king);
-		}
-
-		function update_timer()
-		{
-			let timerElem = document.getElementById("timer");
-			if(timer !== null && timerElem !== null)
-			{
-				let min = Math.floor(timer / 60), sec = timer % 60;
-
-				if(min < 10)
-					min = "0" + min;
-
-				if(sec < 10)
-					sec = "0" + sec;
-
-				timerElem.innerHTML = min + ":" + sec;
-			}
-		}
-		
-		function connect()
-		{
-			let playButton = document.getElementById("playButton");
-			playButton.disabled = true;
-			playButton.className = "btn btn-secondary";
-			playButton.innerHTML = "...מחפש שחקנים";
-
-			server = new WebSocket("ws://localhost:8080", "echo-protocol");
-			
-			server.addEventListener('open', function (event) {
-			});
-
-			server.addEventListener('message', function (message) {
-				var args = message.data.split(";");
-				if(args[0] === "start")
-				{
-					color = (args[1] === "white");
-					start();
-					if(!color)
-						my_turn = true;
-				}else if(args[0] === "move")
-				{
-					for(var i in possible_moves)
-					{
-						possible_moves[i].square.innerHTML = '';
-						delete possible_moves[i];
-					}
-					move_solider(args[1][0], args[1][1], args[2][0], args[2][1]);
-				}else if(args[0] === "eat")
-				{
-					remove_solider(args[1][0], args[1][1]);
-				}else if(args[0] === "king")
-				{
-					let solider = board[args[1]];
-					if(typeof(solider) === "undefined")
-						return;
-						
-					remove_solider(args[1][0], args[1][1]);
-					create_solider(args[1][0], args[1][1], solider.color, true);
-				}else if(args[0] === "turn")
-				{
-					if(args[1] === "true")
-					{
-						my_turn = true;
-					}else
-					{
-						my_turn = false;
-						clear_possible_moves();
-					}
-				}else if(args[0] === "timer")
-				{
-					if(args[1] === "reset")
-					{
-						timer = 30;
-						update_timer();
-					}
-				}
-			});	
-			
-		}
-		
-		function start()
-		{
-			let playButton = document.getElementById("playButton");
-			playButton.disabled = false;
-			playButton.className = "btn btn-success";
-			playButton.innerHTML = "!שחק";
-
-			document.getElementById("startMenu").style.visibility = "hidden";
-			document.getElementById("gameMenu").style.visibility = "visible";
-		
-			// Black
-			create_solider("b", "8", false);
-			create_solider("d", "8", false);
-			create_solider("f", "8", false);
-			create_solider("h", "8", false);
-			create_solider("a", "7", false);
-			create_solider("c", "7", false);
-			create_solider("e", "7", false);
-			create_solider("g", "7", false);
-			create_solider("b", "6", false);
-			create_solider("d", "6", false);
-			create_solider("f", "6", false);
-			create_solider("h", "6", false);
-			
-			// White
-			create_solider("a", "1", true);
-			create_solider("c", "1", true);
-			create_solider("e", "1", true);
-			create_solider("g", "1", true);
-			create_solider("b", "2", true);
-			create_solider("d", "2", true);
-			create_solider("f", "2", true);
-			create_solider("h", "2", true);
-			create_solider("a", "3", true);
-			create_solider("c", "3", true);
-			create_solider("e", "3", true);
-			create_solider("g", "3", true);
-
-			timer = 30;
-			update_timer();
-			setInterval(() => {
-				timer--;
-				update_timer();
-			}, 1000);
-		}
-		</script>
-    </body>
+	</body>
 </html>
